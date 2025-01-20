@@ -1,0 +1,198 @@
+{
+	"id": "024b063c-7add-41a0-bd0c-d129816c44c0",
+	"name": "Country Info",
+	"timestamp": "2025-01-20T09:38:07.500Z",
+	"collection_id": "38269191-ee1728dd-2780-4385-883a-a12040d2af3b",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 0,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-01-20T09:38:05.390Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "75a0777a-988e-42ff-b344-fc4d94483f37",
+			"name": "ListOfContinentsByName",
+			"url": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+			"time": 302,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				302
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "62a88aaa-fb07-41e9-8261-1094f59d484f",
+			"name": "ListOfContinentsByName Copy",
+			"url": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+			"time": 78,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				78
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "8108b302-c117-4382-bbfb-5ad25fb454c9",
+			"name": "ListOfCurrenciesByName",
+			"url": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+			"time": 76,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				76
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "38acd148-873c-4cb9-a5f2-b39ed582357e",
+			"name": "ListOfCountryNamesByName",
+			"url": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+			"time": 220,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				220
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "52d8d4c3-8a75-4d9b-888e-774156611053",
+			"name": "CountryName",
+			"url": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+			"time": 77,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				77
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "ff2d8167-72d0-4753-9fc0-be2e7e7d5fa7",
+			"name": "CountryISOCode",
+			"url": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+			"time": 75,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				75
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "3a023baf-b9eb-4a2c-9861-d4133ec99da6",
+			"name": "FullCountryInfo",
+			"url": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+			"time": 76,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				76
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "8e2014cc-9bd1-4dd4-b95c-92d45793bf70",
+			"name": "LanguageName",
+			"url": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+			"time": 73,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				73
+			],
+			"allTests": [
+				{}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 977,
+	"collection": {
+		"requests": [
+			{
+				"id": "75a0777a-988e-42ff-b344-fc4d94483f37",
+				"method": "POST"
+			},
+			{
+				"id": "62a88aaa-fb07-41e9-8261-1094f59d484f",
+				"method": "POST"
+			},
+			{
+				"id": "8108b302-c117-4382-bbfb-5ad25fb454c9",
+				"method": "POST"
+			},
+			{
+				"id": "38acd148-873c-4cb9-a5f2-b39ed582357e",
+				"method": "POST"
+			},
+			{
+				"id": "52d8d4c3-8a75-4d9b-888e-774156611053",
+				"method": "POST"
+			},
+			{
+				"id": "ff2d8167-72d0-4753-9fc0-be2e7e7d5fa7",
+				"method": "POST"
+			},
+			{
+				"id": "3a023baf-b9eb-4a2c-9861-d4133ec99da6",
+				"method": "POST"
+			},
+			{
+				"id": "8e2014cc-9bd1-4dd4-b95c-92d45793bf70",
+				"method": "POST"
+			}
+		]
+	}
+}
