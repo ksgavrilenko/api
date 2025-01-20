@@ -1,0 +1,2507 @@
+{
+	"info": {
+		"_postman_id": "e52fb548-e4a5-413a-94c5-756cf037d6e4",
+		"name": "DemoShopping",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34453541",
+		"_collection_link": "https://www.postman.com/gold-trinity-191573/workspace/my-workspace/collection/34453541-e52fb548-e4a5-413a-94c5-756cf037d6e4?action=share&source=collection_link&creator=34453541"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Авторизация пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson = pm.response.json();",
+									"var token = responseJson.token;",
+									"pm.collectionVariables.set(\"token\", token);",
+									"pm.test(\"Токен сохранен в переменной коллекции\", function() {",
+									"var savedToken = pm.collectionVariables.get(\"token\");",
+									"pm.expect(savedToken).to.eql(token);",
+									"});",
+									"pm.environment.set(\"token\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"vodichka123\",\n  \"password\": \"vodichka123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "400: Авторизация пользователя c невалидным паролем",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"457yhg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Регистрация нового пользователя",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Функция для генерации случайной строки с указанной длиной и набором символов",
+									"function generateRandomString(length, chars) {",
+									"    let result = '';",
+									"    const charList = chars || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+									"    for (let i = 0; i < length; i++) {",
+									"        result += charList.charAt(Math.floor(Math.random() * charList.length));",
+									"    }",
+									"    return result;",
+									"}",
+									"",
+									"// Функция для генерации случайного имени пользователя",
+									"function generateRandomUserName() {",
+									"    const minLength = 3;",
+									"    const maxLength = 15;",
+									"    const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;",
+									"    return generateRandomString(length, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');",
+									"}",
+									"",
+									"// Функция для генерации случайного пароля",
+									"function generateRandomPassword() {",
+									"    const minLength = 8;",
+									"    const length = Math.floor(Math.random() * (15 - minLength + 1)) + minLength;",
+									"    // Для обеспечения наличия как латинских букв, так и цифр, создаем два отдельных набора символов",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';",
+									"    const digits = '0123456789';",
+									"    let password = generateRandomString(length - 2, letters + digits); // Генерируем пароль с лишними символами",
+									"    password += letters.charAt(Math.floor(Math.random() * letters.length)); // Добавляем букву",
+									"    password += digits.charAt(Math.floor(Math.random() * digits.length)); // Добавляем цифру",
+									"    return shuffleString(password); // Перемешиваем строку для случайного порядка символов",
+									"}",
+									"",
+									"// Функция для перемешивания строки",
+									"function shuffleString(str) {",
+									"    return str.split('').sort(() => Math.random() - 0.5).join('');",
+									"}",
+									"",
+									"// Генерируем значения и сохраняем в переменные",
+									"const randomUserName = generateRandomUserName();",
+									"const randomPassword = generateRandomPassword();",
+									"",
+									"// Сохраняем значения в переменные окружения Postman",
+									"pm.environment.set('randomUserName', randomUserName);",
+									"pm.environment.set('randomPassword', randomPassword);",
+									"",
+									"pm.collectionVariables.set('randomUserName', randomUserName);",
+									"pm.collectionVariables.set('randomPassword', randomPassword);",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{randomUserName}}\",\n  \"password\": \"{{randomPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "400: Регистрация уже существующего пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового пользователя",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Функция для генерации случайной строки с указанной длиной и набором символов",
+									"function generateRandomString(length, chars) {",
+									"    let result = '';",
+									"    const charList = chars || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+									"    for (let i = 0; i < length; i++) {",
+									"        result += charList.charAt(Math.floor(Math.random() * charList.length));",
+									"    }",
+									"    return result;",
+									"}",
+									"",
+									"// Функция для генерации случайного имени пользователя",
+									"function generateRandomUserName() {",
+									"    const minLength = 3;",
+									"    const maxLength = 15;",
+									"    const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;",
+									"    return generateRandomString(length, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');",
+									"}",
+									"",
+									"// Функция для генерации случайного пароля",
+									"function generateRandomPassword() {",
+									"    const minLength = 8;",
+									"    const length = Math.floor(Math.random() * (15 - minLength + 1)) + minLength;",
+									"    // Для обеспечения наличия как латинских букв, так и цифр, создаем два отдельных набора символов",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';",
+									"    const digits = '0123456789';",
+									"    let password = generateRandomString(length - 2, letters + digits); // Генерируем пароль с лишними символами",
+									"    password += letters.charAt(Math.floor(Math.random() * letters.length)); // Добавляем букву",
+									"    password += digits.charAt(Math.floor(Math.random() * digits.length)); // Добавляем цифру",
+									"    return shuffleString(password); // Перемешиваем строку для случайного порядка символов",
+									"}",
+									"",
+									"// Функция для перемешивания строки",
+									"function shuffleString(str) {",
+									"    return str.split('').sort(() => Math.random() - 0.5).join('');",
+									"}",
+									"",
+									"// Генерируем значения и сохраняем в переменные",
+									"const randomUserName = generateRandomUserName();",
+									"const randomPassword = generateRandomPassword();",
+									"",
+									"// Сохраняем значения в переменные окружения Postman",
+									"pm.environment.set('randomUserName', randomUserName);",
+									"pm.environment.set('randomPassword', randomPassword);",
+									"",
+									"pm.collectionVariables.set('randomUserName', randomUserName);",
+									"pm.collectionVariables.set('randomPassword', randomPassword);",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Получаем текст ответа",
+									"const responseText = pm.response.text();",
+									"",
+									"// Используем регулярное выражение для извлечения ID из ответа",
+									"const idMatch = responseText.match(/ID:\\s*(\\d+)/);",
+									"",
+									"// Проверяем, что совпадение найдено",
+									"if (idMatch && idMatch[1]) {",
+									"    // Извлекаем ID",
+									"    const userId = idMatch[1];",
+									"    ",
+									"    // Сохраняем значение в переменную окружения",
+									"    pm.environment.set('userId', userId);",
+									"    ",
+									"    // Сохраняем значение в переменную коллекции",
+									"    pm.collectionVariables.set('userId', userId);",
+									"",
+									"    // Выводим ID в консоль Postman для проверки",
+									"    console.log('User ID extracted:', userId);",
+									"} else {",
+									"    console.log('User ID not found in response');",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{randomUserName}}\",\n  \"password\": \"{{randomPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "400: Добавление нового пользователя c невалидным паролем",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Функция для генерации случайной строки с указанной длиной и набором символов",
+									"function generateRandomString(length, chars) {",
+									"    let result = '';",
+									"    const charList = chars || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+									"    for (let i = 0; i < length; i++) {",
+									"        result += charList.charAt(Math.floor(Math.random() * charList.length));",
+									"    }",
+									"    return result;",
+									"}",
+									"",
+									"// Функция для генерации случайного имени пользователя",
+									"function generateRandomUserName() {",
+									"    const minLength = 3;",
+									"    const maxLength = 15;",
+									"    const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;",
+									"    return generateRandomString(length, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');",
+									"}",
+									"",
+									"// Функция для генерации случайного пароля",
+									"function generateRandomPassword() {",
+									"    const minLength = 8;",
+									"    const length = Math.floor(Math.random() * (15 - minLength + 1)) + minLength;",
+									"    // Для обеспечения наличия как латинских букв, так и цифр, создаем два отдельных набора символов",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';",
+									"    const digits = '0123456789';",
+									"    let password = generateRandomString(length - 2, letters + digits); // Генерируем пароль с лишними символами",
+									"    password += letters.charAt(Math.floor(Math.random() * letters.length)); // Добавляем букву",
+									"    password += digits.charAt(Math.floor(Math.random() * digits.length)); // Добавляем цифру",
+									"    return shuffleString(password); // Перемешиваем строку для случайного порядка символов",
+									"}",
+									"",
+									"// Функция для перемешивания строки",
+									"function shuffleString(str) {",
+									"    return str.split('').sort(() => Math.random() - 0.5).join('');",
+									"}",
+									"",
+									"// Генерируем значения и сохраняем в переменные",
+									"const randomUserName = generateRandomUserName();",
+									"const randomPassword = generateRandomPassword();",
+									"",
+									"// Сохраняем значения в переменные окружения Postman",
+									"pm.environment.set('randomUserName', randomUserName);",
+									"pm.environment.set('randomPassword', randomPassword);",
+									"",
+									"pm.collectionVariables.set('randomUserName', randomUserName);",
+									"pm.collectionVariables.set('randomPassword', randomPassword);",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{randomUserName}}\",\n  \"password\": \"89\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех user_id и login пользователей",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление пользователя по ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Удаление пользователя по несуществующему в системе ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Возвращение списка всех продуктов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Each product object should have required properties\", function () {",
+									"    var responseJson = pm.response.json();",
+									"    ",
+									"    responseJson.forEach(function(product) {",
+									"        pm.expect(product).to.have.property(\"product_id\");",
+									"        pm.expect(product).to.have.property(\"name\");",
+									"        pm.expect(product).to.have.property(\"description\");",
+									"        pm.expect(product).to.have.property(\"price\");",
+									"        pm.expect(product).to.have.property(\"category\");",
+									"        pm.expect(product).to.have.property(\"manufacturer\");",
+									"        pm.expect(product).to.have.property(\"imageUrl\");",
+									"        pm.expect(product).to.have.property(\"freeShipping\");",
+									"    });",
+									"});",
+									"pm.test(\"Each product object has correct data types\", function () {",
+									"    var responseJson = pm.response.json();",
+									"    ",
+									"    responseJson.forEach(function(product) {",
+									"        pm.expect(product).to.have.property(\"product_id\").that.is.a(\"number\");",
+									"        pm.expect(product).to.have.property(\"name\").that.is.a(\"string\");",
+									"        pm.expect(product).to.have.property(\"description\").that.is.a(\"string\");",
+									"        pm.expect(product).to.have.property(\"price\").that.is.a(\"number\");  // assuming price is a string",
+									"        pm.expect(product).to.have.property(\"category\").that.is.a(\"string\");",
+									"        pm.expect(product).to.have.property(\"manufacturer\").that.is.a(\"string\");",
+									"        pm.expect(product).to.have.property(\"imageUrl\").that.is.a(\"string\");",
+									"        pm.expect(product).to.have.property(\"freeShipping\").that.is.a(\"number\");  // assuming freeShipping is 0 or 1",
+									"    });",
+									"});",
+									"pm.test(\"Product IDs should be unique\", function () {",
+									"    var responseJson = pm.response.json();",
+									"    var ids = responseJson.map(product => product.product_id);",
+									"    var uniqueIds = new Set(ids);",
+									"    ",
+									"    pm.expect(uniqueIds.size).to.eql(ids.length, \"Product IDs are not unique\");",
+									"});",
+									"pm.test(\"Free shipping should be a valid boolean value\", function () {",
+									"    var responseJson = pm.response.json();",
+									"    ",
+									"    responseJson.forEach(function(product) {",
+									"        pm.expect([0, 1]).to.include(product.freeShipping, \"Free shipping should be 0 or 1\");",
+									"    });",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/products"
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового продукта c валидными данными",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Получаем текст ответа",
+									"var responseText = pm.response.text();",
+									"",
+									"// Используем регулярное выражение для извлечения ID",
+									"var idMatch = responseText.match(/ID:\\s*(\\d+)/);",
+									"",
+									"// Проверяем, найден ли ID",
+									"if (idMatch && idMatch[1]) {",
+									"    var productId = idMatch[1];",
+									"",
+									"    // Сохраняем ID в переменную коллекции",
+									"    pm.collectionVariables.set(\"productId\", productId);",
+									"    pm.environment.set(\"productId\", productId);",
+									"",
+									"    // Логируем ID для отладки",
+									"    console.log(\"Product ID saved:\", productId);",
+									"} else {",
+									"    // Если ID не найден, выводим сообщение в консоль",
+									"    console.error(\"Product ID not found in the response.\");",
+									"}",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time should be less than 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Массивы с названиями моделей",
+									"const phoneModels = [",
+									"    \"iPhone 14\",",
+									"    \"Samsung Galaxy S22\",",
+									"    \"Google Pixel 6\",",
+									"    \"OnePlus 10\",",
+									"    \"Xiaomi Mi 11\"",
+									"];",
+									"",
+									"const laptopModels = [",
+									"    \"MacBook Pro 16\",",
+									"    \"Dell XPS 13\",",
+									"    \"HP Spectre x360\",",
+									"    \"Lenovo ThinkPad X1\",",
+									"    \"Asus ZenBook 14\"",
+									"];",
+									"const smartwatchModels = [",
+									"    \"Apple Watch Series 7\",",
+									"    \"Samsung Galaxy Watch 4\",",
+									"    \"Fitbit Charge 5\",",
+									"    \"Garmin Forerunner 245\",",
+									"    \"Fossil Gen 6\"",
+									"];",
+									"// Функция для генерации случайного значения",
+									"function getRandomModel() {",
+									"    const allModels = [...phoneModels, ...laptopModels];",
+									"    const randomIndex = Math.floor(Math.random() * allModels.length);",
+									"    return allModels[randomIndex];",
+									"}",
+									"",
+									"// Установка сгенерированного значения в переменную Postman",
+									"pm.environment.set(\"randomModel\", getRandomModel());",
+									"pm.collectionVariables.set(\"randomModel\", getRandomModel());",
+									"// Функция для генерации случайной цены от 1 до 10000",
+									"function getRandomPrice() {",
+									"    return Math.floor(Math.random() * 10000) + 1;",
+									"}",
+									"// Установка сгенерированного значения в переменную Postman",
+									"pm.environment.set(\"randomPrice\", getRandomPrice());",
+									"pm.collectionVariables.set(\"randomPrice\", getRandomPrice());",
+									"// Массив с категориями товаров",
+									"const categories = [",
+									"    \"Laptops\",",
+									"    \"Phones\",",
+									"    \"Watches\"",
+									"];",
+									"// Функция для генерации случайной категории",
+									"function getRandomCategory() {",
+									"    const randomIndex = Math.floor(Math.random() * categories.length);",
+									"    return categories[randomIndex];",
+									"}",
+									"// Установка сгенерированного значения в переменную Postman",
+									"pm.environment.set(\"randomCategory\", getRandomCategory());",
+									"pm.collectionVariables.set(\"randomCategory\", getRandomCategory());",
+									"// Массив с производителями",
+									"const manufacturers = [",
+									"    \"Apple\",",
+									"    \"Xiaomi\",",
+									"    \"Huawei\",",
+									"    \"Samsung\"",
+									"];",
+									"",
+									"// Функция для генерации случайного производителя",
+									"function getRandomManufacturer() {",
+									"    const randomIndex = Math.floor(Math.random() * manufacturers.length);",
+									"    return manufacturers[randomIndex];",
+									"}",
+									"",
+									"// Установка сгенерированного значения в переменную Postman",
+									"pm.environment.set(\"randomManufacturer\", getRandomManufacturer());",
+									"pm.collectionVariables.set(\"randomManufacturer\", getRandomManufacturer());",
+									"// Массив с URL на картинки котиков",
+									"const catImageUrls = [",
+									"    \"https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_1280.jpg\",",
+									"    \"https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930_1280.jpg\",",
+									"    \"https://cdn.pixabay.com/photo/2017/11/14/13/06/kitty-2948404_1280.jpg\",",
+									"    \"https://cdn.pixabay.com/photo/2023/06/29/12/28/cats-8096304_1280.jpg\",",
+									"    \"https://cdn.pixabay.com/photo/2021/12/17/19/15/pet-6877246_1280.jpg\"",
+									"];",
+									"",
+									"// Функция для генерации случайного URL на картинку",
+									"function getRandomCatImageUrl() {",
+									"    const randomIndex = Math.floor(Math.random() * catImageUrls.length);",
+									"    return catImageUrls[randomIndex];",
+									"}",
+									"",
+									"// Установка сгенерированного значения в переменную Postman",
+									"pm.environment.set(\"randomCatImageUrl\", getRandomCatImageUrl());",
+									"pm.collectionVariables.set(\"randomCatImageUrl\", getRandomCatImageUrl());",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{randomModel}}\",\n  \"description\": \"Описание для {{randomModel}}\",\n  \"price\": {{randomPrice}},\n  \"category\": \"{{randomCategory}}\",\n  \"manufacturer\": \"{{randomManufacturer}}\",\n  \"imageUrl\": \"{{randomCatImageUrl}}\",\n  \"freeShipping\": {{$randomBoolean}}\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/add-product"
+					},
+					"response": []
+				},
+				{
+					"name": "400: Добавление нового продукта c невалидной ценой",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"IPhone 16 Pro\",\n  \"description\": \"Описание для IPhone 16 Pro.\",\n  \"price\": \"пятьсот\",\n  \"category\": \"Phone\",\n  \"manufacturer\": \"Apple\",\n  \"imageUrl\": \"http://example.com/image.jpg\",\n  \"freeShipping\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/add-product"
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск товара по существующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time should be less than 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"pm.test(\"Image URL should be a valid URL\", function () {",
+									"    var responseJson = pm.response.json();",
+									"    var urlPattern = /^(https?:\\/\\/[^\\s$.?#].[^\\s]*)$/; // Простейшее регулярное выражение для проверки формата URL",
+									"    ",
+									"    pm.expect(responseJson.imageUrl).to.match(urlPattern);",
+									"});",
+									"pm.test(\"Response should have the correct structure\", function () {",
+									"    var responseJson = pm.response.json();",
+									"    ",
+									"    pm.expect(responseJson).to.have.property(\"product_id\").that.is.a(\"number\");",
+									"    pm.expect(responseJson).to.have.property(\"name\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"description\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"price\").that.is.a(\"number\"); ",
+									"    pm.expect(responseJson).to.have.property(\"category\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"manufacturer\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"imageUrl\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"freeShipping\").that.is.a(\"number\"); // Assuming freeShipping is 0 or 1",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Поиск товара по несуществующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "234567890"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Полное обновление товара по существующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time should be less than 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Galaxy Watch Ultra\",\n  \"description\": \"Описание для Galaxy Watch Ultra\",\n  \"price\": 10000 ,\n  \"category\": \"Watches\",\n  \"manufacturer\": \"Samsung\",\n  \"imageUrl\": \"http://samsung.com/image.jpg\",\n  \"freeShipping\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "400: Обновление товара по существующему ID, используя невалидную доставку",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Galaxy Watch Ultra\",\n  \"description\": \"Описание для Galaxy Watch Ultra\",\n  \"price\": 10000 ,\n  \"category\": \"Watches\",\n  \"manufacturer\": \"Samsung\",\n  \"imageUrl\": \"http://samsung.com/image.jpg\",\n \"freeShipping\": \"free\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Обновление товара по несуществующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Galaxy Watch Ultra\",\n  \"description\": \"Описание для Galaxy Watch Ultra\",\n  \"price\": 10000 ,\n  \"category\": \"Watches\",\n  \"manufacturer\": \"Samsung\",\n  \"imageUrl\": \"http://samsung.com/image.jpg\",\n \"freeShipping\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "234567890"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Частичное обновление товара по существующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time should be less than 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Galaxy Watch Ultra\",\n  \"description\": \"Описание для Galaxy Watch Ultra\",\n  \"price\": 50 ,\n  \"category\": \"Watches\",\n  \"manufacturer\": \"Samsung\",\n  \"imageUrl\": \"http://samsung.com/image.jpg\",\n  \"freeShipping\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "400: Частичное обновление товара по существующему ID, используя невалидную цену",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Galaxy Watch Ultra\",\n  \"description\": \"Описание для Galaxy Watch Ultra\",\n  \"price\": 00 ,\n  \"category\": \"Watches\",\n  \"manufacturer\": \"Samsung\",\n  \"imageUrl\": \"http://example.com/image.jpg\",\n  \"freeShipping\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Частичное обновление товара по несуществующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Galaxy Watch Ultra\",\n  \"description\": \"Описание для Galaxy Watch Ultra\",\n  \"price\": 50000 ,\n  \"category\": \"Watches\",\n  \"manufacturer\": \"Samsung\",\n  \"imageUrl\": \"http://samsung.com/image.jpg\",\n  \"freeShipping\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "34567890"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск товаров по категории",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/FindByCategory?category=Phones",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"FindByCategory"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Phones"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Поиск товаров по несуществующей в системе категории",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/FindByCategory?category=обувь",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"FindByCategory"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "обувь"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск товаров по производителю",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/FindByManufacturer?manufacturer=Apple",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"FindByManufacturer"
+							],
+							"query": [
+								{
+									"key": "manufacturer",
+									"value": "Apple"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Поиск товаров по несуществующему производителю",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/FindByManufacturer?manufacturer=Tecno",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"FindByManufacturer"
+							],
+							"query": [
+								{
+									"key": "manufacturer",
+									"value": "Tecno"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск товаров c бесплатной доставкой",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/FindByShipping?freeShipping=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"FindByShipping"
+							],
+							"query": [
+								{
+									"key": "freeShipping",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "400: Поиск товаров при вводе невалидной бесплатной доставки",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/FindByShipping?freeShipping=no",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"FindByShipping"
+							],
+							"query": [
+								{
+									"key": "freeShipping",
+									"value": "no"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Фильтрация списка продуктов",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/filter?category=Phones&manufacturer=Apple&freeShipping=true&minPrice=50&maxPrice=1500",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Phones"
+								},
+								{
+									"key": "manufacturer",
+									"value": "Apple"
+								},
+								{
+									"key": "freeShipping",
+									"value": "true"
+								},
+								{
+									"key": "minPrice",
+									"value": "50"
+								},
+								{
+									"key": "maxPrice",
+									"value": "1500"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "400: Фильтрация списка продуктов по несуществующему фильтру (цвет товара)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/filter?category=Phones&manufacturer=Apple&freeShipping=true&minPrice=50&maxPrice=800&color=red",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Phones"
+								},
+								{
+									"key": "manufacturer",
+									"value": "Apple"
+								},
+								{
+									"key": "freeShipping",
+									"value": "true"
+								},
+								{
+									"key": "minPrice",
+									"value": "50"
+								},
+								{
+									"key": "maxPrice",
+									"value": "800"
+								},
+								{
+									"key": "color",
+									"value": "red"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление товара по существующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time should be less than 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "403: Ограничение на удаление товара по существующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Удаление товара по несуществующему в системе ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/id/:productid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"id",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "{{productId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Добавление товара в корзину пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": 1 ,\n  \"quantity\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "401: Добавление товара в корзину без авторизации",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": 1 ,\n  \"quantity\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "500: Добавление товара с несуществующим в системе ID в корзину пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": 2345623456789987654323456789876543234567897890,\n  \"quantity\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "400: Добавление товара в корзину пользователя при вводе невалидного количества",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": 1 ,\n  \"quantity\": \"три\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Возвращение содержимого корзины пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var cart_item_id = pm.response.json()[0].cart_item_id;",
+									"pm.collectionVariables.set(\"cartitemid\", cart_item_id);",
+									"pm.environment.set(\"cartitemid\", cart_item_id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/getCart"
+					},
+					"response": []
+				},
+				{
+					"name": "401: Возвращение содержимого корзины неавторизованного пользователя",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/getCart"
+					},
+					"response": []
+				},
+				{
+					"name": "500: Возвращение содержимого корзины пользователя, используя невалидный токен",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{vault:authorization-secret}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/getCart"
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление количества товара в корзине пользователя",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": "{{cartitemid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "401: Обновление количества товара в корзине неавторизованного пользователя",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": 8\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": "{{cartitemid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Обновление количества товара отсутствующего в корзине",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": 8\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": "5675"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "500: Обновление количества товара в корзине пользователя при вводе невалидного количества",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": \"восемь\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": "{{cartitemid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Не получается 400: Обновление количества товара в корзине пользователя",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": "{{cartitemid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление товара из корзины пользователя",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": "{{cartitemid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "401: Удаление товара из корзины неавторизованного пользователя",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": "{{cartitemid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "400: Удаление товара  из корзины пользователя с невалидным cartItemId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Удаление отсутствующего товара в корзине пользователя",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cart/:cartItemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								":cartItemId"
+							],
+							"variable": [
+								{
+									"key": "cartItemId",
+									"value": "{{cartitemid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders и Payment",
+			"item": [
+				{
+					"name": "Добавление товара в корзину пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": 1,\n    \"quantity\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Создание заказа из товаров в корзине пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "401: Создание заказа из товаров в корзине неавторизованного пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "500: Создание заказа из товаров в корзине пользователя, используя невалидный токен",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{vault:authorization-secret}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Получение списка всех заказов пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var order_id = pm.response.json()[0].order_id;",
+									"pm.collectionVariables.set(\"orderid\", order_id);",
+									"pm.environment.set(\"orderid\", order_id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/user-orders"
+					},
+					"response": []
+				},
+				{
+					"name": "401: Получение списка всех заказов неавторизованного пользователя",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/user-orders"
+					},
+					"response": []
+				},
+				{
+					"name": "500: Получение списка всех заказов пользователя, используя невалидный токен",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{vault:authorization-secret}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/user-orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение количества товара в заказе",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/:orderId/products/:productId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":orderId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{orderid}}"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Изменение количества товара при вводе невалидного номера заказа",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/:orderId/products/:productId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":orderId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "999"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "401: Изменение количества товара в заказе без авторизации",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/:orderId/products/:productId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":orderId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{orderid}}"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "500: Изменение количества товара в заказе при вводе невалидного количества",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": \"один\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/:orderId/products/:productId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":orderId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{orderid}}"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление второго товара в корзину пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": 2,\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Создание второго заказа из товаров в корзине пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var orderId = pm.response.json().orderId;",
+									"pm.collectionVariables.set(\"orderid2\", orderId);",
+									"pm.environment.set(\"orderid2\", orderId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление товара из заказа",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:orderId/products/:productId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":orderId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{orderid2}}"
+								},
+								{
+									"key": "productId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "401: Удаление товара из заказа без авторизации",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:orderId/products/:productId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":orderId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{orderid}}"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "400 не получается: Удаление товара из заказа, используя невалидный номер заказа",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:orderId/products/:productId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":orderId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "dfghjkl"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "404: Удаление отсутствующего товара из заказа",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:orderId/products/:productId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":orderId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{orderid2}}"
+								},
+								{
+									"key": "productId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление общей суммы заказов пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/update-orders-total"
+					},
+					"response": []
+				},
+				{
+					"name": "401: Обновление общей суммы заказов пользователя без авторизации",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/update-orders-total"
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление балансов карт и Paypal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/updateBalances"
+					},
+					"response": []
+				},
+				{
+					"name": "Оплата заказов пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"card_type\": \"VISA\",\n  \"card_code\": \"8820354696467284\",\n  \"expiry_month\": 12,\n  \"expiry_year\": 26,\n  \"cvv\": \"123\",\n  \"email\": \"valid@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/pay"
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление товара в корзину пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": 1,\n    \"quantity\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Создание заказа из товаров в корзине пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "400: Оплата заказов пользователя при вводе невалидного CVV",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"card_type\": \"VISA\",\n  \"card_code\": \"8820354696467284\",\n  \"expiry_month\": 12,\n  \"expiry_year\": 26,\n  \"cvv\": \"3\",\n  \"email\": \"valid@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/pay"
+					},
+					"response": []
+				},
+				{
+					"name": "401: Оплата заказов неавторизованного пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"card_type\": \"VISA\",\n  \"card_code\": \"8820354696467284\",\n  \"expiry_month\": 12,\n  \"expiry_year\": 26,\n  \"cvv\": \"123\",\n  \"email\": \"valid@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/pay"
+					},
+					"response": []
+				},
+				{
+					"name": "Получение данных об оплаченных заказах",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/orders-history"
+					},
+					"response": []
+				},
+				{
+					"name": "401: Получение данных об оплаченных заказах без авторизации",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/orders-history"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{token}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://qa.demoshopping.ru"
+		},
+		{
+			"key": "token",
+			"value": "{{vault:json-web-token}}"
+		},
+		{
+			"key": "username",
+			"value": "vodichka123"
+		},
+		{
+			"key": "password",
+			"value": "vodichka123"
+		},
+		{
+			"key": "productId",
+			"value": ""
+		},
+		{
+			"key": "cartitemid",
+			"value": ""
+		},
+		{
+			"key": "orderid",
+			"value": ""
+		},
+		{
+			"key": "orderid2",
+			"value": ""
+		},
+		{
+			"key": "randomUserName",
+			"value": ""
+		},
+		{
+			"key": "randomPassword",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "randomModel",
+			"value": ""
+		},
+		{
+			"key": "randomPrice",
+			"value": ""
+		},
+		{
+			"key": "randomCategory",
+			"value": ""
+		},
+		{
+			"key": "randomManufacturer",
+			"value": ""
+		},
+		{
+			"key": "randomCatImageUrl",
+			"value": ""
+		}
+	]
+}
