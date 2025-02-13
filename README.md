@@ -12,5 +12,5 @@ ___
 
 
 
-Также, в рамках тестирования с помощью инструмента Postman, было проведено тестирование используя WSDL SOAP-сервиса [CountryInfoService](http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL), для получения информации о целевой стране. 
+Также, в рамках тестирования с помощью инструмента Postman, было проведено тестирование используя WSDL SOAP-сервиса [CountryInfoService](http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL), для получения информации о целевой стране: 
 -  [Коллекция для тестирования SOAP-сервиса](https://www.postman.com/test66-2666/workspace/test/collection/38269191-ee1728dd-2780-4385-883a-a12040d2af3b?action=share&creator=38269191&active-environment=38269191-ca091062-7923-4e9e-9613-f76d7910f516) + [в формате JSON](https://github.com/ksgavrilenko/api/commit/81b9a6f72ae86fdc98eb9885aa4bbebda43747e5)
