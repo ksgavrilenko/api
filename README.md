@@ -1,5 +1,5 @@
 ## Тестирование API
-С помощью инструмента Postman было проведено тестирование REST API веб-приложения ["Интернет-магазин"](https://qa.demoshopping.ru) , на основании документации [SWAGGER](https://qa.demoshopping.ru/api-docs/)
+С помощью инструмента Postman было проведено тестирование REST API веб-приложения ["Интернет-магазин"](https://qa.demoshopping.ru) , на основании документации [SWAGGER](https://qa.demoshopping.ru/api-docs/):
 
 
 -  [Коллекция в Postman](https://www.postman.com/test66-2666/workspace/test/collection/38269191-8cbacb2d-18d6-4798-9db4-97c95113ec68?action=share&creator=38269191&active-environment=38269191-ca091062-7923-4e9e-9613-f76d7910f516) + [файл с коллекцией в формате JSON](https://github.com/ksgavrilenko/api/commit/6eb826b9df13e09f21a9372a759d87cb5cf2f383)
